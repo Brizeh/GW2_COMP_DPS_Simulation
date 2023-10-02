@@ -142,13 +142,11 @@ def get_title_boss(boss): # Get le titre du graph
 
 
 
-Boss = CAIRN
+Boss = CAIRN # Le boss ici
 
-for i in range(6): # Test de plusieurs compo mélange cata et bsw
-    graph_comp(Boss,[pCata]*(10-i*2)+[pBsw]*i*2,modeDPS="dpsFinal")
+Compo = [pBsw]*3 + [cScrg]*3 + [pCata]*4    # La Compo ici
 
-
-
+graph_comp(Boss,Compo) 
 
 
 spe_list = [pBsw,cScrg,pCata]  # Param pour pauffiner le graphique
