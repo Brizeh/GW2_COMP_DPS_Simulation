@@ -138,12 +138,20 @@ def get_title_boss(boss): # Get le titre du graph
     s = boss[2] + " = " + str(boss[0])+"HP"
     plt.title(s)
 
+
+
+
+
 Boss = CAIRN
 
-for i in range(6): # Test de plusieurs compo mélange scourge et bsw
+for i in range(6): # Test de plusieurs compo mélange cata et bsw
     graph_comp(Boss,[pCata]*(10-i*2)+[pBsw]*i*2,modeDPS="dpsFinal")
 
-spe_list = [pBsw,cScrg,pCata]
+
+
+
+
+spe_list = [pBsw,cScrg,pCata]  # Param pour pauffiner le graphique
 get_title_boss(Boss)
 xtemp = np.arange(len(spe_list[0].x))
 plt.plot(xtemp,Boss[0]/xtemp,color="black",label="Mort du Boss",linestyle='--')
