@@ -29,7 +29,7 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
     seuils_up = [] # Compteur de seuils type UP (comme Bsw)
     seuils_down = [] # Compteur de seuils type DOWN
 
-    for e in spes:  # Appliquer les degats de seuils UP sur tout le fight
+    for e in spes:  # Appliquer les degats de seuils_UP sur tout le fight
 
                     # Ici e = [[seuil="up"/"down", seuil_en_%, multiplicateur], np.array[pDPS], np.array[cDPS]]
 
@@ -40,23 +40,23 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
                 seuils_down.append(e[0][1])
         if(e[0][0]=="up"):
             if(e[0][3]=="p"):
-                e[1]=e[1]*e[0][2] # Si le bonus s'appliquent aux dégats power
+                e[1]=e[1]*e[0][2] # Si le bonus s'applique aux dégats power
             elif(e[0][3]=="c"):
-                e[2]=e[2]*e[0][2] # Si le bonus s'appliquent aux dégats condi
+                e[2]=e[2]*e[0][2] # Si le bonus s'applique aux dégats condi
             else:
                 e[1]=e[1]*e[0][2]
-                e[2]=e[2]*e[0][2] # Si le bonus s'appliquent aux dégats power et condi
+                e[2]=e[2]*e[0][2] # Si le bonus s'applique aux dégats power et condi
             if(e[0][1] not in seuils_up):
                 seuils_up.append(e[0][1])
         Tdps=Tdps*1+e[1]+e[2]
 
-    Tdmg = [0]  # Mettre à jour les degats pour évaluer les seuils up
+    Tdmg = [0]  # Mettre à jour les degats pour évaluer les seuils_up
     for i in range(1,len(Tdps)):
         Tdmg.append(np.sum(Tdps[0:i]))
     Tdmg = np.array(Tdmg)
 
     if(len(seuils_up)!=0):
-        for i in range(len(seuils_up)):    #Enlever les seuil up par ordre décroissant
+        for i in range(len(seuils_up)):    #Enlever les seuil_up par ordre décroissant
             dmgSeuil = boss_HP*(1-seuils_up[i]/100)
             idmgSeuil = np.where(Tdmg>=dmgSeuil)[0][0]
             Tdps = np.zeros(len(spe_list[0].x))
@@ -71,12 +71,12 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
                         e[2][idmgSeuil:]=e[2][idmgSeuil:]/e[0][2]
                 Tdps=Tdps*1+e[1]+e[2]          
 
-    Tdmg = [0]  # Mettre à jour les degats pour évaluer les seuils down (comme BTTH)
+    Tdmg = [0]  # Mettre à jour les degats pour évaluer les seuils_down (comme BTTH)
     for i in range(1,len(Tdps)):
         Tdmg.append(np.sum(Tdps[0:i]))
     Tdmg = np.array(Tdmg)
 
-    if(len(seuils_down)!=0): # Ajouter les degats des seuil down par ordre décroissant
+    if(len(seuils_down)!=0): # Ajouter les degats des seuil_down par ordre décroissant
         for i in range(len(seuils_down)):
             dmgSeuil = boss_HP*(1-seuils_down[i]/100)
             idmgSeuil = np.where(Tdmg>=dmgSeuil)[0][0]
@@ -84,12 +84,12 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
             for e in spes:
                 if(e[0][1]==seuils_down[i]):
                     if(e[0][3]=="p"):
-                        e[1][idmgSeuil:]=e[1][idmgSeuil:]*e[0][2] # Si le bonus s'appliquent aux dégats power
+                        e[1][idmgSeuil:]=e[1][idmgSeuil:]*e[0][2] # Si le bonus s'applique aux dégats power
                     elif(e[0][3]=="c"):
-                        e[2][idmgSeuil:]=e[2][idmgSeuil:]*e[0][2] # Si le bonus s'appliquent aux dégats condi
+                        e[2][idmgSeuil:]=e[2][idmgSeuil:]*e[0][2] # Si le bonus s'applique aux dégats condi
                     else:
                         e[1][idmgSeuil:]=e[1][idmgSeuil:]*e[0][2]
-                        e[2][idmgSeuil:]=e[2][idmgSeuil:]*e[0][2] # Si le bonus s'appliquent aux dégats power et condi
+                        e[2][idmgSeuil:]=e[2][idmgSeuil:]*e[0][2] # Si le bonus s'applique aux dégats power et condi
                 Tdps=Tdps*1+e[1]+e[2]
 
     Tdmg = [0]  # Mettre à jour les degats pour le rendu des dégats final
