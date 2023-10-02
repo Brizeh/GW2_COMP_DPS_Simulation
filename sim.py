@@ -148,9 +148,14 @@ def get_title_boss(boss): # Get le titre du graph
     s = boss[2] + " = " + str(boss[0])+"HP"
     plt.title(s)
 
-
-
 fig, ax = plt.subplots()
+
+#####################################################################################################################
+###################################### PARTIE SET UP DE COMPO #######################################################
+#####################################################################################################################
+
+
+
 
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
 Boss = CAIRN # Le boss ici
@@ -161,6 +166,13 @@ graph_comp(Boss,Compo1,modeDPS=dpsStyle)
 Compo2 = [pBsw]*9 + [pCata] # Et ici une nouvelle compo (9Bsw et 1Cata)
 graph_comp(Boss,Compo2,modeDPS=dpsStyle) 
 
+
+
+
+
+#####################################################################################################################
+###################################### PARTIE SET UP DE COMPO #######################################################
+#####################################################################################################################
 
 spe_list = [pBsw,cScrg,pCata]  # Param pour pauffiner le graphique
 get_title_boss(Boss)
