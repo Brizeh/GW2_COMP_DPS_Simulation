@@ -29,7 +29,10 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
     seuils_up = [] # Compteur de seuils type UP (comme Bsw)
     seuils_down = [] # Compteur de seuils type DOWN
 
-    for e in spes:  # Appliquer les degats de seuils sur tout le fight
+    for e in spes:  # Appliquer les degats de seuils UP sur tout le fight
+
+                    # Ici e = [[seuil="up"/"down", seuil_en_%, multiplicateur], np.array[pDPS], np.array[cDPS]]
+
         e[1]=e[1]*2597/boss_armor #Augmentation des dégats power sur armure 
 
         if(e[0][0]=="down"):
