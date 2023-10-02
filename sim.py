@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from specialization import*
 from collections import Counter
+from matplotlib.ticker import EngFormatter
 
 def shortest_x(spe_list):      #Obtenir le temps le plus court de 'spe_list' pour reajuster la longueur des autres tableaux 
     x_min = len(spe_list[0].x)
@@ -118,20 +119,29 @@ def get_name_comp(spe_list): # Get les noms de spé
     return s
 
 def graph_comp(boss,spe_list,modeDPS="dpsFinal"): # Grapher un boss avec une compo
+
     shortest_x(spe_list)
     x,y = reajust_dmg(*boss[:-1],spe_list)
-    if(modeDPS=="dpsFinal"):
+    if(modeDPS=="dpsFinal"):  # choix du mode d'affichage degats cummulés ou dps 
         y = y/x
         plt.ylabel("Dmg/s")
+
     n = get_name_comp(spe_list)
-    c = get_color_comp(spe_list)
-    plt.plot(y,marker='o',markersize=3,label=n)
+    c = get_color_comp(spe_list) # A utiliser si on veut utiliser les couleurs de classes de Arcdps #Rip les daltoniens
+
+    ax.plot(y,marker='o',markersize=3,label=n) # Paufinage de la grille de lecture du graphique
     ysup = np.amax(y[1:])*1.04
     yinf = -0.04*np.amax(y[1:])
     xsup = np.amax(x)*1.02
     xinf = -np.amax(x)*0.02
-    plt.xlim([xinf,xsup])
-    plt.ylim([yinf,ysup])
+    ax.set_xticks(np.arange(0, 1000, step=1)) 
+    if(dpsStyle=="dpsFinal"):
+        ax.set_yticks(np.arange(0,ysup,step=20000))
+    elif(dpsStyle=="cummulative"):
+        ax.set_yticks(np.arange(0,ysup,step=1000000))
+    ax.set_xlim([xinf,xsup])
+    ax.set_ylim([yinf,ysup])
+
     return
 
 def get_title_boss(boss): # Get le titre du graph
@@ -140,23 +150,29 @@ def get_title_boss(boss): # Get le titre du graph
 
 
 
+fig, ax = plt.subplots()
 
-
+dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
 Boss = CAIRN # Le boss ici
 
-Compo = [pBsw]*3 + [cScrg]*3 + [pCata]*4    # La Compo ici
+Compo1 = [pBsw]*10    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
+graph_comp(Boss,Compo1,modeDPS=dpsStyle) 
 
-graph_comp(Boss,Compo) 
+Compo2 = [pBsw]*9 + [pCata] # Et ici une nouvelle compo (9Bsw et 1Cata)
+graph_comp(Boss,Compo2,modeDPS=dpsStyle) 
 
 
 spe_list = [pBsw,cScrg,pCata]  # Param pour pauffiner le graphique
 get_title_boss(Boss)
 xtemp = np.arange(len(spe_list[0].x))
-plt.plot(xtemp,Boss[0]/xtemp,color="black",label="Mort du Boss",linestyle='--')
-#plt.plot(xtemp,np.ones(len(xtemp))*Boss[0],color="black")
+if(dpsStyle=="dpsFinal"):
+    ax.plot(xtemp,Boss[0]/xtemp,color="black",label="Mort du Boss",linestyle='--')
+elif(dpsStyle=="cummulative"):
+    ax.plot(xtemp,np.ones(len(xtemp))*Boss[0],color="black",label="Mort du Boss",linestyle='--')
 plt.style.use('tableau-colorblind10')
-plt.ticklabel_format(style='plain')
-plt.xlabel("Time (s)")
-plt.grid()
-plt.legend(loc='best')
+formatter0 = EngFormatter()
+ax.yaxis.set_major_formatter(formatter0)
+ax.set_xlabel("Time (s)")
+ax.grid()
+ax.legend(loc='best')
 plt.show()
