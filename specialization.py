@@ -4,7 +4,7 @@ import csv
 ################# FONCTIONS D'INITIALISATION DE SPÉ #################
 
 class spe:  #classe
-    def __init__(self, x, pdps, cdps, pdmg, cdmg, color, name, seuil=['non',0,1]):
+    def __init__(self, x, pdps, cdps, pdmg, cdmg, color, name, seuil=["",0,1,""]):
         self.x=x
         self.pdps=pdps
         self.cdps=cdps
@@ -55,5 +55,6 @@ DHUUMCM = [40000000,2597,"DHUUM CM"]
 
 ################# LES SPÉ #################
 
-pBsw = spe(*get_spe('pBsw'),np.array([225,217,40]),"pBsw",seuil=["up",80,1.25])
+pBsw = spe(*get_spe('pBsw'),np.array([225,217,40]),"pBsw",seuil=["up",80,1.25,"p"])
 cScrg = spe(*get_spe('cScrg'),np.array([14,120,15]),"cScrg")
+pCata = spe(*get_spe('pCata'),np.array([231,19,19]),"pCata",seuil=["down",50,1.2,"p"])
