@@ -37,12 +37,12 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
                 seuils_down.append(e[0][1])
         if(e[0][0]=="up"):
             if(e[0][3]=="p"):
-                e[1]=e[1]*e[0][2]
+                e[1]=e[1]*e[0][2] # Si le bonus s'appliquent aux dégats power
             elif(e[0][3]=="c"):
-                e[2]=e[2]*e[0][2]
+                e[2]=e[2]*e[0][2] # Si le bonus s'appliquent aux dégats condi
             else:
                 e[1]=e[1]*e[0][2]
-                e[2]=e[2]*e[0][2]
+                e[2]=e[2]*e[0][2] # Si le bonus s'appliquent aux dégats power et condi
             if(e[0][1] not in seuils_up):
                 seuils_up.append(e[0][1])
         Tdps=Tdps*1+e[1]+e[2]
@@ -60,7 +60,7 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
             for e in spes:
                 if(e[0][1]==seuils_up[i]):
                     if(e[0][3]=="p"):
-                        e[1][idmgSeuil:]=e[1][idmgSeuil:]/e[0][2]
+                        e[1][idmgSeuil:]=e[1][idmgSeuil:]/e[0][2] 
                     elif(e[0][3]=="c"):
                         e[2][idmgSeuil:]=e[2][idmgSeuil:]/e[0][2]
                     else:
@@ -81,12 +81,12 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
             for e in spes:
                 if(e[0][1]==seuils_down[i]):
                     if(e[0][3]=="p"):
-                        e[1][idmgSeuil:]=e[1][idmgSeuil:]*e[0][2]
+                        e[1][idmgSeuil:]=e[1][idmgSeuil:]*e[0][2] # Si le bonus s'appliquent aux dégats power
                     elif(e[0][3]=="c"):
-                        e[2][idmgSeuil:]=e[2][idmgSeuil:]*e[0][2]
+                        e[2][idmgSeuil:]=e[2][idmgSeuil:]*e[0][2] # Si le bonus s'appliquent aux dégats condi
                     else:
                         e[1][idmgSeuil:]=e[1][idmgSeuil:]*e[0][2]
-                        e[2][idmgSeuil:]=e[2][idmgSeuil:]*e[0][2]
+                        e[2][idmgSeuil:]=e[2][idmgSeuil:]*e[0][2] # Si le bonus s'appliquent aux dégats power et condi
                 Tdps=Tdps*1+e[1]+e[2]
 
     Tdmg = [0]  # Mettre à jour les degats pour le rendu des dégats final
