@@ -35,8 +35,8 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
 
         e[1]=e[1]*2597/boss_armor #Augmentation des dégats power sur armure 
 
-        if(e[0][0]=="down"):
-            if(e[0][1] not in seuils_down):
+        if(e[0][0]=="down"): 
+            if(e[0][1] not in seuils_down): #Comptage des seuils_down UNIQUES
                 seuils_down.append(e[0][1])
         if(e[0][0]=="up"):
             if(e[0][3]=="p"):
@@ -46,7 +46,7 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
             else:
                 e[1]=e[1]*e[0][2]
                 e[2]=e[2]*e[0][2] # Si le bonus s'applique aux dégats power et condi
-            if(e[0][1] not in seuils_up):
+            if(e[0][1] not in seuils_up): #Comptage des seuils_up UNIQUES
                 seuils_up.append(e[0][1])
         Tdps=Tdps*1+e[1]+e[2]
 
