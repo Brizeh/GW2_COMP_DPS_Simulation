@@ -4,7 +4,7 @@ from specialization import*
 from collections import Counter
 from matplotlib.ticker import EngFormatter
 
-def shortest_x(spe_list):      #Obtenir le temps le plus court de 'spe_list' pour reajuster la longueur des autres tableaux 
+def shortest_x(spe_list):      # Obtenir le temps le plus court de 'spe_list' pour reajuster la longueur des autres tableaux 
     x_min = len(spe_list[0].x)
     for spes in spe_list:
         if(len(spes.x)<x_min):
@@ -13,7 +13,7 @@ def shortest_x(spe_list):      #Obtenir le temps le plus court de 'spe_list' pou
         spes.x, spes.pdps, spes.cdps, spes.pdmg, spes.cdmg = spes.x[:x_min], spes.pdps[:x_min], spes.cdps[:x_min], spes.pdmg[:x_min], spes.cdmg[:x_min]
     return
 
-def sortSpe(spe_list):  # Fonction copie des données des objets
+def sortSpe(spe_list):  # Fonction de copie des données des objets de spé
     spes = []
     for e in spe_list:
         perso = []
@@ -25,18 +25,18 @@ def sortSpe(spe_list):  # Fonction copie des données des objets
 
 def reajust_dmg(boss_HP,boss_armor,spe_list):
     spes = sortSpe(spe_list) # Copie des données des objets Spé
-    Tdps = np.zeros(len(spe_list[0].x)) # Dps instantané total
+    Tdps = np.zeros(len(spe_list[0].x)) # Dps instantané de la compo totale
     seuils_up = [] # Compteur de seuils type UP (comme Bsw)
-    seuils_down = [] # Compteur de seuils type DOWN
+    seuils_down = [] # Compteur de seuils type DOWN (comme BTTH)
 
     for e in spes:  # Appliquer les degats de seuils_UP sur tout le fight
 
                     # Ici e = [[seuil="up"/"down", seuil_en_%, multiplicateur], np.array[pDPS], np.array[cDPS]]
 
-        e[1]=e[1]*2597/boss_armor #Augmentation des dégats power sur armure 
+        e[1]=e[1]*2597/boss_armor # Augmentation des dégats power sur armure 
 
         if(e[0][0]=="down"): 
-            if(e[0][1] not in seuils_down): #Comptage des seuils_down UNIQUES
+            if(e[0][1] not in seuils_down): # Comptage des seuils_down UNIQUES
                 seuils_down.append(e[0][1])
         if(e[0][0]=="up"):
             if(e[0][3]=="p"):
@@ -46,17 +46,17 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
             else:
                 e[1]=e[1]*e[0][2]
                 e[2]=e[2]*e[0][2] # Si le bonus s'applique aux dégats power et condi
-            if(e[0][1] not in seuils_up): #Comptage des seuils_up UNIQUES
+            if(e[0][1] not in seuils_up): # Comptage des seuils_up UNIQUES
                 seuils_up.append(e[0][1])
         Tdps=Tdps*1+e[1]+e[2]
 
-    Tdmg = [0]  # Mettre à jour les degats pour évaluer les seuils_up
+    Tdmg = [0]  # Mettre à jour les degats pour re-évaluer les seuils_up
     for i in range(1,len(Tdps)):
         Tdmg.append(np.sum(Tdps[0:i]))
     Tdmg = np.array(Tdmg)
 
     if(len(seuils_up)!=0):
-        for i in range(len(seuils_up)):    #Enlever les seuil_up par ordre décroissant
+        for i in range(len(seuils_up)):    # Enlever les seuil_up par ordre décroissant
             dmgSeuil = boss_HP*(1-seuils_up[i]/100)
             idmgSeuil = np.where(Tdmg>=dmgSeuil)[0][0]
             Tdps = np.zeros(len(spe_list[0].x))
@@ -71,7 +71,7 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
                         e[2][idmgSeuil:]=e[2][idmgSeuil:]/e[0][2]
                 Tdps=Tdps*1+e[1]+e[2]          
 
-    Tdmg = [0]  # Mettre à jour les degats pour évaluer les seuils_down (comme BTTH)
+    Tdmg = [0]  # Mettre à jour les degats pour évaluer les seuils_down
     for i in range(1,len(Tdps)):
         Tdmg.append(np.sum(Tdps[0:i]))
     Tdmg = np.array(Tdmg)
@@ -103,14 +103,14 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
 
     return xTdmg,Tdmg
 
-def get_color_comp(spe_list): # Get la couleur de comp
+def get_color_comp(spe_list): # Get la couleur de la comp (ex: Bsw+Cata = Jaune+Rouge => Orange)
     c = np.zeros(3)
     for e in spe_list:
         c = c + e.color
     c = c/len(spe_list)/255
     return c
 
-def get_name_comp(spe_list): # Get les noms de spé
+def get_name_comp(spe_list): # Get les noms de spé à afficher dans la compo pour le graph
     names = []
     for e in spe_list:
         names.append(e.name)
@@ -140,7 +140,7 @@ def graph_comp(boss,spe_list,modeDPS="dpsFinal"): # Grapher un boss avec une com
     graphs.append(y)
     return
 
-def get_title_boss(boss): # Get le titre du graph
+def get_title_boss(boss): # Get le titre du graph = NOM_DU_BOSS + HP_BOSS 
     s = boss[2] + " = " + str(boss[0])+"HP"
     plt.title(s)
 
@@ -159,7 +159,7 @@ DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode dalto
 
 '''
 
-Les spé actuellement disponible pour des tests : 
+Les spé actuellement disponibles pour des tests : 
 
     DPS : [pCata,cScrg,pBsw]
     ALAC : [cARen]
@@ -183,9 +183,9 @@ graph_comp(Boss,Compo2,modeDPS=dpsStyle)
 ###################################### PARTIE SET UP DE COMPO #######################################################
 #####################################################################################################################
 
-# Params pour pauffiner le graphique
+# Paramètres pour pauffiner le graphique
 
-yMax=0
+yMax=0 # Ajuster la fenetre
 xMax=0
 for i in range(len(graphs)):
     tempy = np.amax(graphs[i][1:])
@@ -200,7 +200,7 @@ yinf = -0.04*yMax
 xsup = xMax*1.02
 xinf = -xMax*0.02
 
-arrondi1 = 10**3
+arrondi1 = 10**3 # Ajuster les échelles
 arrondi2 = 10**5
 if(dpsStyle=="dpsFinal"):
     yStep = int(np.round((ysup/25)/arrondi1)*arrondi1)
@@ -211,17 +211,18 @@ ax.set_yticks(np.arange(0,ysup,yStep))
 ax.set_xlim([xinf,xsup])
 ax.set_ylim([yinf,ysup])
 
-get_title_boss(Boss)
-xtemp = np.linspace(0,600,2000)
+get_title_boss(Boss) # Le titre
 
+xtemp = np.linspace(0,600,2000) # Afficher la barre de mort du BOSS
 if(dpsStyle=="dpsFinal"):
     ax.plot(xtemp[1:],Boss[0]/xtemp[1:],color="black",label="Mort du Boss",linestyle='--')
 elif(dpsStyle=="cummulative"):
     ax.plot(xtemp,np.ones(len(xtemp))*Boss[0],color="black",label="Mort du Boss",linestyle='--')
 
-if(DALTONIEN_MODE):
+if(DALTONIEN_MODE): # Salut les daltoniens
     plt.style.use('tableau-colorblind10')
-formatter0 = EngFormatter()
+
+formatter0 = EngFormatter() # Reformatage des textes puis affichage final
 ax.yaxis.set_major_formatter(formatter0)
 ax.set_xlabel("Time (s)")
 ax.grid()
