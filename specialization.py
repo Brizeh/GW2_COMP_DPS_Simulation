@@ -53,8 +53,13 @@ SH = [35391600,2597,"SH"]
 DHUUM = [32000000,2597,"SH CM"]
 DHUUMCM = [40000000,2597,"DHUUM CM"]
 
+Q1 = [19268760,2293,"Q1"]
+Q1CM = [21195636,2293,"Q1 CM"]
+
 ################# LES SPÉ #################
 
 pBsw = spe(*get_spe('pBsw'),np.array([225,217,40]),"pBsw",seuil=["up",80,1.25,"p"])
 cScrg = spe(*get_spe('cScrg'),np.array([14,120,15]),"cScrg")
 pCata = spe(*get_spe('pCata'),np.array([231,19,19]),"pCata",seuil=["down",50,1.2,"p"])
+cARen = spe(*get_spe('cARen'),np.array([144,12,63]),"cARen")
+cARen_NA = spe(*get_spe('cARen_NA'),np.array([144,12,63]),"cARen_NA")

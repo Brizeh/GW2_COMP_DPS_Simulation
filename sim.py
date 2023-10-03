@@ -132,19 +132,11 @@ def graph_comp(boss,spe_list,modeDPS="dpsFinal"): # Grapher un boss avec une com
     n = get_name_comp(spe_list)
     c = get_color_comp(spe_list) # A utiliser si on veut utiliser les couleurs de classes de Arcdps #Rip les daltoniens
 
-    ax.plot(y,marker='o',markersize=3,label=n) # Paufinage de la grille de lecture du graphique
-    ysup = np.amax(y[1:])*1.04
-    yinf = -0.04*np.amax(y[1:])
-    xsup = np.amax(x)*1.02
-    xinf = -np.amax(x)*0.02
-    ax.set_xticks(np.arange(0, 1000, step=1)) 
-    if(dpsStyle=="dpsFinal"):
-        ax.set_yticks(np.arange(0,ysup,step=20000))
-    elif(dpsStyle=="cummulative"):
-        ax.set_yticks(np.arange(0,ysup,step=1000000))
-    ax.set_xlim([xinf,xsup])
-    ax.set_ylim([yinf,ysup])
-
+    if(DALTONIEN_MODE):
+        ax.plot(y,marker='o',markersize=3,label=n) 
+    else:
+        ax.plot(y,marker='o',markersize=3,label=n,color=c)
+    graphs.append(y)
     return
 
 def get_title_boss(boss): # Get le titre du graph
@@ -153,21 +145,26 @@ def get_title_boss(boss): # Get le titre du graph
 
 fig, ax = plt.subplots()
 
+graphs = []
+
 #####################################################################################################################
 ###################################### PARTIE SET UP DE COMPO #######################################################
 #####################################################################################################################
 
 
+
+
+DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien
 
 
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
-Boss = CAIRN # Le boss ici
+Boss = [3900000,2597,"GOLEM"] # Le boss ici
 
-Compo1 = [pBsw]*10    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
-graph_comp(Boss,Compo1,modeDPS=dpsStyle) 
-
-Compo2 = [pBsw]*9 + [pCata] # Et ici une nouvelle compo (9Bsw et 1Cata)
+Compo2 = [cARen_NA]    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
 graph_comp(Boss,Compo2,modeDPS=dpsStyle) 
+
+Compo1 = [cARen]    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
+graph_comp(Boss,Compo1,modeDPS=dpsStyle) 
 
 
 
@@ -177,14 +174,38 @@ graph_comp(Boss,Compo2,modeDPS=dpsStyle)
 ###################################### PARTIE SET UP DE COMPO #######################################################
 #####################################################################################################################
 
-spe_list = [pBsw,cScrg,pCata]  # Param pour pauffiner le graphique
+# Params pour pauffiner le graphique
+
+yMax=0
+xMax=0
+for i in range(len(graphs)):
+    tempy = np.amax(graphs[i][1:])
+    tempx = len(graphs[i])
+    if(tempx>=xMax):
+        xMax = tempx
+    if(tempy>=yMax):
+        yMax = tempy
+
+ysup = yMax*1.04
+yinf = -0.04*yMax
+xsup = xMax*1.02
+xinf = -xMax*0.02
+
+ax.set_xticks(np.arange(0, 1000, step=2)) 
+ax.set_yticks(np.arange(0,ysup,np.round((ysup/25)/100))*100)
+ax.set_xlim([xinf,xsup])
+ax.set_ylim([yinf,ysup])
+
 get_title_boss(Boss)
-xtemp = np.arange(len(spe_list[0].x))
+xtemp = np.linspace(0,600,2000)
+
 if(dpsStyle=="dpsFinal"):
-    ax.plot(xtemp,Boss[0]/xtemp,color="black",label="Mort du Boss",linestyle='--')
+    ax.plot(xtemp[1:],Boss[0]/xtemp[1:],color="black",label="Mort du Boss",linestyle='--')
 elif(dpsStyle=="cummulative"):
     ax.plot(xtemp,np.ones(len(xtemp))*Boss[0],color="black",label="Mort du Boss",linestyle='--')
-plt.style.use('tableau-colorblind10')
+
+if(DALTONIEN_MODE):
+    plt.style.use('tableau-colorblind10')
 formatter0 = EngFormatter()
 ax.yaxis.set_major_formatter(formatter0)
 ax.set_xlabel("Time (s)")
