@@ -158,7 +158,7 @@ graphs = []
 DALTONIEN_MODE = 0  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien
 
 
-dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
+dpsStyle = "cummulative"   # Ya "cummulative" et "dpsFinal"
 Boss = CAIRN # Le boss ici
 
 Compo1 = [pBsw]*10    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
@@ -191,9 +191,12 @@ yinf = -0.04*yMax
 xsup = xMax*1.02
 xinf = -xMax*0.02
 
-arrondi = 1000
-yStep = int(np.round((ysup/25)/arrondi)*arrondi)
-
+arrondi1 = 10**3
+arrondi2 = 10**5
+if(dpsStyle=="dpsFinal"):
+    yStep = int(np.round((ysup/25)/arrondi1)*arrondi1)
+else:
+    yStep = int(np.round((ysup/25)/arrondi2)*arrondi2)
 ax.set_xticks(np.arange(0, 1000, step=2)) 
 ax.set_yticks(np.arange(0,ysup,yStep))
 ax.set_xlim([xinf,xsup])

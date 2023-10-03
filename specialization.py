@@ -18,7 +18,7 @@ def get_spe(name):	#lecture des .csv
     with open('specializations/'+name+'.csv', 'r') as f:
         reader = csv.reader(f)
         data = list(reader)
-        data = np.array(data[1:]).astype(np.float64)
+        data = np.array(data[2:]).astype(np.float64)
         pdps = data[0:,2]
         cdps = data[0:,3]
         pdmg = data[0:,4]
