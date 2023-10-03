@@ -157,6 +157,15 @@ graphs = []
 
 DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien (cc Ravi)
 
+'''
+
+Les spé actuellement disponible pour des tests : 
+
+    DPS : [pCata,cScrg,pBsw]
+    ALAC : [cARen]
+    QUICK : [allo ?!]
+
+'''
 
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
 Boss = CAIRN # Le boss ici
