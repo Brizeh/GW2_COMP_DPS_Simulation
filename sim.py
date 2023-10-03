@@ -155,7 +155,7 @@ graphs = []
 
 
 
-DALTONIEN_MODE = 0  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien (cc Ravi)
+DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien (cc Ravi)
 
 '''
 
@@ -182,7 +182,10 @@ graph_comp(Boss,Compo,modeDPS=dpsStyle)
 Compo = [pSlb]*6 + [cARen]*2 + [cQUnt]*2   
 graph_comp(Boss,Compo,modeDPS=dpsStyle)
 
-Compo = [pHolo]*6 + [cARen]*2 + [cQUnt]*2     
+Compo = [cHarb]*6 + [cARen]*2 + [cQUnt]*2  
+graph_comp(Boss,Compo,modeDPS=dpsStyle)
+
+Compo = [pBers]*6 + [cARen]*2 + [cQUnt]*2  
 graph_comp(Boss,Compo,modeDPS=dpsStyle)
 
 
@@ -215,7 +218,8 @@ if(dpsStyle=="dpsFinal"):
     yStep = int(np.round((ysup/25)/arrondi1)*arrondi1)
 else:
     yStep = int(np.round((ysup/25)/arrondi2)*arrondi2)
-ax.set_xticks(np.arange(0, 1000, step=2)) 
+xStep = 1
+ax.set_xticks(np.arange(0, 1000, step=xStep)) 
 ax.set_yticks(np.arange(0,ysup,yStep))
 ax.set_xlim([xinf,xsup])
 ax.set_ylim([yinf,ysup])
