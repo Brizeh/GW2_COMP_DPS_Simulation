@@ -31,7 +31,7 @@ def reajust_dmg(boss_HP,boss_armor,spe_list):
 
     for e in spes:  # Appliquer les degats de seuils_UP sur tout le fight
 
-                    # Ici e = [[seuil="up"/"down", seuil_en_%, multiplicateur], np.array[pDPS], np.array[cDPS]]
+                    # Ici e = [[seuil="up"/"down", seuil_en_%, multiplicateur, "power" ou "condi"], np.array[pDPS], np.array[cDPS]]
 
         e[1]=e[1]*2597/boss_armor # Augmentation des dégats power sur armure 
 
@@ -161,23 +161,29 @@ DALTONIEN_MODE = 0  # 0 pour les couleurs de classes / 1 pour couleur mode dalto
 
 Les spé actuellement disponibles pour des tests : 
 
-    DPS : [pCata,cScrg,pBsw]
+    DPS : [pCata, cScrg, pBsw, pSlb, pHolo, cHarb, pWeav, pSpb,
+           pDar, pTemp, cReap, cDar, cRen]
+
     ALAC : [cARen]
-    QUICK : [allo ?!]
+    
+    QUICK : [cQFb, cQUnt]
 
 '''
 
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
 Boss = CAIRN # Le boss ici
 
-Compo = [pBsw]*6+[cARen]*4    # La Compo ici 6 Bsw et 4 cARen COPIUMMMMMMMMMMMMMMMMM
+Compo = [pBsw]*6+[cARen]*2+[cQUnt]*2    # La Compo ici 6 Bsw et 4 cARen COPIUMMMMMMMMMMMMMMMMM
 graph_comp(Boss,Compo,modeDPS=dpsStyle) 
 
-Compo = [pCata]*6+[cARen]*4    # La Compo ici 6 pCata et 4cARen
-graph_comp(Boss,Compo,modeDPS=dpsStyle) 
+Compo = [pWeav]*6+[cARen]*2+[cQUnt]*2      # La Compo ici 10 Scrg oui
+graph_comp(Boss,Compo,modeDPS=dpsStyle)
 
-Compo = [cScrg]*10      # La Compo ici 10 Scrg oui
-graph_comp(Boss,Compo,modeDPS=dpsStyle) 
+Compo = [pSlb]*6+[cARen]*2+[cQUnt]*2      # La Compo ici 10 Scrg oui
+graph_comp(Boss,Compo,modeDPS=dpsStyle)
+
+Compo = [pHolo]*6+[cARen]*2+[cQUnt]*2      # La Compo ici 10 Scrg oui
+graph_comp(Boss,Compo,modeDPS=dpsStyle)
 
 
 
