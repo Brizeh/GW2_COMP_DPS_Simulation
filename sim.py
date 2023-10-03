@@ -165,7 +165,7 @@ Les spé actuellement disponibles pour des tests :
            pDar, pTemp, cReap, cDar, cRen]
 
     ALAC : [cARen]
-    
+
     QUICK : [cQFb, cQUnt]
 
 '''
@@ -173,16 +173,16 @@ Les spé actuellement disponibles pour des tests :
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
 Boss = CAIRN # Le boss ici
 
-Compo = [pBsw]*6+[cARen]*2+[cQUnt]*2    # La Compo ici 6 Bsw et 4 cARen COPIUMMMMMMMMMMMMMMMMM
+Compo = [pBsw]*6 + [cARen]*2 + [cQUnt]*2    # La Compo ici 6 Bsw + 2 cARen + 2 cQUnt
 graph_comp(Boss,Compo,modeDPS=dpsStyle) 
 
-Compo = [pWeav]*6+[cARen]*2+[cQUnt]*2      # La Compo ici 10 Scrg oui
+Compo = [pWeav]*6 + [cARen]*2 + [cQUnt]*2
 graph_comp(Boss,Compo,modeDPS=dpsStyle)
 
-Compo = [pSlb]*6+[cARen]*2+[cQUnt]*2      # La Compo ici 10 Scrg oui
+Compo = [pSlb]*6 + [cARen]*2 + [cQUnt]*2   
 graph_comp(Boss,Compo,modeDPS=dpsStyle)
 
-Compo = [pHolo]*6+[cARen]*2+[cQUnt]*2      # La Compo ici 10 Scrg oui
+Compo = [pHolo]*6 + [cARen]*2 + [cQUnt]*2     
 graph_comp(Boss,Compo,modeDPS=dpsStyle)
 
 
