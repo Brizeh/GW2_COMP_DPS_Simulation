@@ -155,10 +155,10 @@ graphs = []
 
 
 
-DALTONIEN_MODE = 0  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien
+DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien (cc Ravi)
 
 
-dpsStyle = "cummulative"   # Ya "cummulative" et "dpsFinal"
+dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
 Boss = CAIRN # Le boss ici
 
 Compo1 = [pBsw]*10    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
