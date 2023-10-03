@@ -118,7 +118,7 @@ def get_name_comp(spe_list): # Get les noms de spé à afficher dans la compo po
     s = ""
     for e in names:
         s = s + str(names[e]) + " " + e + " | "
-    s = s[0:len(s)-2]
+    s = "["+s[0:len(s)-3]+"]"
     return s
 
 def graph_comp(boss,spe_list,modeDPS="dpsFinal"): # Grapher un boss avec une compo
@@ -155,7 +155,7 @@ graphs = []
 
 
 
-DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien (cc Ravi)
+DALTONIEN_MODE = 0  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien (cc Ravi)
 
 '''
 
@@ -170,11 +170,14 @@ Les spé actuellement disponibles pour des tests :
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
 Boss = CAIRN # Le boss ici
 
-Compo1 = [pBsw]*10    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
-graph_comp(Boss,Compo1,modeDPS=dpsStyle) 
+Compo = [pBsw]*6+[cARen]*4    # La Compo ici 6 Bsw et 4 cARen COPIUMMMMMMMMMMMMMMMMM
+graph_comp(Boss,Compo,modeDPS=dpsStyle) 
 
-Compo2 = [pCata]*5+[pBsw]*5    # La Compo ici 5Bsw et 5pCata
-graph_comp(Boss,Compo2,modeDPS=dpsStyle) 
+Compo = [pCata]*6+[cARen]*4    # La Compo ici 6 pCata et 4cARen
+graph_comp(Boss,Compo,modeDPS=dpsStyle) 
+
+Compo = [cScrg]*10      # La Compo ici 10 Scrg oui
+graph_comp(Boss,Compo,modeDPS=dpsStyle) 
 
 
 
