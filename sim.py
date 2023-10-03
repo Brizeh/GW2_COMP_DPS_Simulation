@@ -125,6 +125,7 @@ def graph_comp(boss,spe_list,modeDPS="dpsFinal"): # Grapher un boss avec une com
 
     shortest_x(spe_list)
     x,y = reajust_dmg(*boss[:-1],spe_list)
+    x[0]=1 #sécurité pour la division par 0
     if(modeDPS=="dpsFinal"):  # choix du mode d'affichage degats cummulés ou dps 
         y = y/x
         plt.ylabel("Dmg/s")
@@ -154,18 +155,17 @@ graphs = []
 
 
 
-DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien
+DALTONIEN_MODE = 0  # 0 pour les couleurs de classes / 1 pour couleur mode daltonien
 
 
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
-Boss = [3900000,2597,"GOLEM"] # Le boss ici
+Boss = CAIRN # Le boss ici
 
-Compo2 = [cARen_NA]    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
-graph_comp(Boss,Compo2,modeDPS=dpsStyle) 
-
-Compo1 = [cARen]    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
+Compo1 = [pBsw]*10    # La Compo ici (10 Bsw par exemple ici) COPIUMMMMMMMMMMMMMMMMM
 graph_comp(Boss,Compo1,modeDPS=dpsStyle) 
 
+Compo2 = [pCata]*5+[pBsw]*5    # La Compo ici 5Bsw et 5pCata
+graph_comp(Boss,Compo2,modeDPS=dpsStyle) 
 
 
 
@@ -191,8 +191,11 @@ yinf = -0.04*yMax
 xsup = xMax*1.02
 xinf = -xMax*0.02
 
+arrondi = 1000
+yStep = int(np.round((ysup/25)/arrondi)*arrondi)
+
 ax.set_xticks(np.arange(0, 1000, step=2)) 
-ax.set_yticks(np.arange(0,ysup,np.round((ysup/25)/100))*100)
+ax.set_yticks(np.arange(0,ysup,yStep))
 ax.set_xlim([xinf,xsup])
 ax.set_ylim([yinf,ysup])
 
