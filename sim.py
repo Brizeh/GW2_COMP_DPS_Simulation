@@ -1,8 +1,13 @@
+from specialization import*
 import numpy as np
 import matplotlib.pyplot as plt
-from specialization import*
 from collections import Counter
 from matplotlib.ticker import EngFormatter
+from itertools import combinations_with_replacement, product, chain
+
+dpsxmin = 120
+dpsymax = 0
+isShuffle = False
 
 def shortest_x(spe_list):      # Obtenir le temps le plus court de 'spe_list' pour reajuster la longueur des autres tableaux 
     x_min = len(spe_list[0].x)
@@ -13,7 +18,7 @@ def shortest_x(spe_list):      # Obtenir le temps le plus court de 'spe_list' po
         spes.x, spes.pdps, spes.cdps, spes.pdmg, spes.cdmg = spes.x[:x_min], spes.pdps[:x_min], spes.cdps[:x_min], spes.pdmg[:x_min], spes.cdmg[:x_min]
     return
 
-def sortSpe(spe_list):  # Fonction de copie des données des objets de spé
+def sort_spe(spe_list):  # Fonction de copie des données des objets de spé
     spes = []
     for e in spe_list:
         perso = []
@@ -24,7 +29,7 @@ def sortSpe(spe_list):  # Fonction de copie des données des objets de spé
     return spes 
 
 def reajust_dmg(boss_HP,boss_armor,spe_list):
-    spes = sortSpe(spe_list) # Copie des données des objets Spé
+    spes = sort_spe(spe_list) # Copie des données des objets Spé
     Tdps = np.zeros(len(spe_list[0].x)) # Dps instantané de la compo totale
     seuils_up = [] # Compteur de seuils type UP (comme Bsw)
     seuils_down = [] # Compteur de seuils type DOWN (comme BTTH)
@@ -121,8 +126,8 @@ def get_name_comp(spe_list): # Get les noms de spé à afficher dans la compo po
     s = "["+s[0:len(s)-3]+"]"
     return s
 
-def graph_comp(boss,spe_list,modeDPS="dpsFinal"): # Grapher un boss avec une compo
-
+def graph_comp(boss,spe_list,modeDPS="dpsFinal",shuff=False,g_marker="o"): # Grapher un boss avec une compo
+    g_line = "solid"
     shortest_x(spe_list)
     x,y = reajust_dmg(*boss[:-1],spe_list)
     x[0]=1 #sécurité pour la division par 0
@@ -132,17 +137,74 @@ def graph_comp(boss,spe_list,modeDPS="dpsFinal"): # Grapher un boss avec une com
 
     n = get_name_comp(spe_list)
     c = get_color_comp(spe_list) # A utiliser si on veut utiliser les couleurs de classes de Arcdps #Rip les daltoniens
-
-    if(DALTONIEN_MODE):
-        ax.plot(y,marker='o',markersize=3,label=n) 
+    if(len(graphs)>9):
+        g_line = "dashed"
+    if(len(graphs)>18):
+        g_line = "densely dashdotted"
+    if(shuff):
+        global dpsxmin
+        global dpsymax
+        if(len(y)<=dpsxmin):
+            dpsxmin = len(y)
+            if(dpsymax<y[-1]):
+                dpsymax=y[-1]
+                if(DALTONIEN_MODE):
+                    ax.plot(y,marker=g_marker,markersize=3,label=n,linestyle=g_line)
+                    graphs.append(y) 
+                else:
+                    ax.plot(y,marker=g_marker,markersize=3,label=n,color=c,linestyle=g_line)
+                    graphs.append(y)
     else:
-        ax.plot(y,marker='o',markersize=3,label=n,color=c)
-    graphs.append(y)
+        if(DALTONIEN_MODE):
+            ax.plot(y,marker='o',markersize=3,label=n)
+            graphs.append(y) 
+        else:
+            ax.plot(y,marker='o',markersize=3,label=n,color=c)
+            graphs.append(y)
     return
 
 def get_title_boss(boss): # Get le titre du graph = NOM_DU_BOSS + HP_BOSS 
-    s = boss[2] + " = " + str(boss[0])+"HP"
+    if(isShuffle):
+        s = boss[2] + " = " + str(boss[0])+"HP                ("+str(combs)+" combinaisons testées)"
+    else:
+        s = boss[2] + " = " + str(boss[0])+"HP"
     plt.title(s)
+
+def shuffle_comp(boss,modeDPS="dpsFinal",dps=[],alac=[],quick=[],g_marker="o"): # Fonction pour tester toutes les combinaisons de compo
+    global isShuffle
+    isShuffle = True
+    compos=[]
+    if(len(dps)!=0):
+        compos.append(list(combinations_with_replacement(dps, 6)))
+    if(len(alac)!=0):
+        compos.append(list(combinations_with_replacement(alac, 2)))
+    if(len(quick)!=0):
+        compos.append(list(combinations_with_replacement(quick, 2)))
+
+    if(len(compos)==1):
+        global combs
+        combs = len(compos[0])
+        compos=compos[0]
+        for e in compos:
+            graph_comp(boss,e,modeDPS=modeDPS,shuff=True,g_marker=g_marker)
+    elif(len(compos)==2):
+        combs = len(compos[0])*len(compos[1])
+        shuffcomb = list(product(compos[0],compos[1]))
+        for e in shuffcomb:
+            e = list(chain.from_iterable(e))
+            graph_comp(boss,e,modeDPS=modeDPS,shuff=True,g_marker=g_marker)
+    elif(len(compos)==3):
+        combs = len(compos[0])*len(compos[1])*len(compos[2])
+        shuffcomb = list(product(compos[0],compos[1]))
+        for e in shuffcomb:
+            e = list(chain.from_iterable(e))
+        shuffcomb = list(product(shuffcomb,compos[2]))
+        for e in shuffcomb:
+            e = list(chain.from_iterable(e))
+            e = [item for sublist in e for item in (sublist if isinstance(sublist, tuple) else [sublist])]
+            graph_comp(boss,e,modeDPS=modeDPS,shuff=True,g_marker=g_marker)
+
+    return
 
 fig, ax = plt.subplots()
 
@@ -171,23 +233,13 @@ Les spé actuellement disponibles pour des tests :
 '''
 
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
-Boss = CAIRN # Le boss ici
+boss = CAIRN # Le boss ici
 
-Compo = [pBsw]*6 + [cARen]*2 + [cQUnt]*2    # La Compo ici 6 Bsw + 2 cARen + 2 cQUnt
-graph_comp(Boss,Compo,modeDPS=dpsStyle) 
+dps = [cVirt,pDar,cHarb,pBsw,pWeav,pSlb]
+alac = [cARen]
+quick = [cQFb,cQUnt]
 
-Compo = [pWeav]*6 + [cARen]*2 + [cQUnt]*2
-graph_comp(Boss,Compo,modeDPS=dpsStyle)
-
-Compo = [pSlb]*6 + [cARen]*2 + [cQUnt]*2   
-graph_comp(Boss,Compo,modeDPS=dpsStyle)
-
-Compo = [cHarb]*6 + [cARen]*2 + [cQUnt]*2  
-graph_comp(Boss,Compo,modeDPS=dpsStyle)
-
-Compo = [pBers]*6 + [cARen]*2 + [cQUnt]*2  
-graph_comp(Boss,Compo,modeDPS=dpsStyle)
-
+shuffle_comp(boss,dps=dps,alac=alac,quick=quick,g_marker="")
 
 
 
@@ -224,13 +276,13 @@ ax.set_yticks(np.arange(0,ysup,yStep))
 ax.set_xlim([xinf,xsup])
 ax.set_ylim([yinf,ysup])
 
-get_title_boss(Boss) # Le titre
+get_title_boss(boss) # Le titre
 
 xtemp = np.linspace(0,600,2000) # Afficher la barre de mort du BOSS
 if(dpsStyle=="dpsFinal"):
-    ax.plot(xtemp[1:],Boss[0]/xtemp[1:],color="black",label="Mort du Boss",linestyle='--')
+    ax.plot(xtemp[1:],boss[0]/xtemp[1:],color="black",label="Mort du Boss",linestyle='--')
 elif(dpsStyle=="cummulative"):
-    ax.plot(xtemp,np.ones(len(xtemp))*Boss[0],color="black",label="Mort du Boss",linestyle='--')
+    ax.plot(xtemp,np.ones(len(xtemp))*boss[0],color="black",label="Mort du Boss",linestyle='--')
 
 if(DALTONIEN_MODE): # Salut les daltoniens
     plt.style.use('tableau-colorblind10')
