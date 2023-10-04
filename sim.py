@@ -140,7 +140,7 @@ def graph_comp(boss,spe_list,modeDPS="dpsFinal",shuff=False,g_marker="o"): # Gra
     if(len(graphs)>9):
         g_line = "dashed"
     if(len(graphs)>18):
-        g_line = "densely dashdotted"
+        g_line = "dashdot"
     if(shuff):
         global dpsxmin
         global dpsymax
@@ -203,7 +203,7 @@ def shuffle_comp(boss,modeDPS="dpsFinal",dps=[],alac=[],quick=[],g_marker="o"): 
             e = list(chain.from_iterable(e))
             e = [item for sublist in e for item in (sublist if isinstance(sublist, tuple) else [sublist])]
             graph_comp(boss,e,modeDPS=modeDPS,shuff=True,g_marker=g_marker)
-
+    isShuffle = False
     return
 
 fig, ax = plt.subplots()
@@ -224,20 +224,20 @@ DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode dalto
 Les spé actuellement disponibles pour des tests : 
 
     DPS : [pCata, cScrg, pBsw, pSlb, pHolo, cHarb, pWeav, pSpb,
-           pDar, pTemp, cReap, cDar, cRen]
+           pDar, pTemp, cReap, cDar, cRen, cMech, cVirt, pBers]
 
-    ALAC : [cARen]
+    ALAC : [caRen, caMir, paBsw]
 
-    QUICK : [cQFb, cQUnt]
+    QUICK : [cqFb, cqUnt, cqHarb, pqHer]
 
 '''
 
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
 boss = CAIRN # Le boss ici
 
-dps = [cVirt,pDar,cHarb,pBsw,pWeav,pSlb]
-alac = [cARen]
-quick = [cQFb,cQUnt]
+dps = [cVirt,cReap,cHarb,pBsw,pWeav,pSlb]
+alac = [paBsw,caMir]
+quick = [cqHarb,cqUnt, cqFb, pqHer]
 
 shuffle_comp(boss,dps=dps,alac=alac,quick=quick,g_marker="")
 
@@ -291,5 +291,5 @@ formatter0 = EngFormatter() # Reformatage des textes puis affichage final
 ax.yaxis.set_major_formatter(formatter0)
 ax.set_xlabel("Time (s)")
 ax.grid()
-ax.legend(loc='best')
+ax.legend(bbox_to_anchor=(1,1), loc="upper left")
 plt.show()
