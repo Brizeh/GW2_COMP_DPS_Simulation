@@ -56,6 +56,9 @@ DHUUMCM = [40000000,2597,"DHUUM CM"]
 Q1 = [19268760,2293,"Q1"]
 Q1CM = [21195636,2293,"Q1 CM"]
 
+ADINA = [22611300,2597,"ADINA"]
+ADINACM = [24872430,2597,"ADINA CM"]
+
 ################# LES SPÉ #################
 
 cWar = np.array([225,217,40])
@@ -68,27 +71,67 @@ cRanger = np.array([164,216,53])
 cMesmer = np.array([205,49,229])
 cThief = np.array([185,122,207])
 
+##################### pDPS #####################
+
 pBsw = spe(*get_spe('pBsw'),cWar,"pBsw",seuil=["up",80,1.25,"p"])
-cScrg = spe(*get_spe('cScrg'),cNecro,"cScrg")
-pCata = spe(*get_spe('pCata'),cElem,"pCata",seuil=["down",50,1.2,"p"])
-caRen = spe(*get_spe('caRen'),cRev,"caRen")
-caRen_NA = spe(*get_spe('caRen_NA'),cRev,"caRen_NA")
-cqFb = spe(*get_spe('cqFb'),cGuard,"cqFb")
 pSlb = spe(*get_spe('pSlb'),cRanger,"pSlb")
 pHolo = spe(*get_spe('pHolo'),cEngi,"pHolo")
-cqUnt = spe(*get_spe('cqUnt'),cRanger,"cqUnt")
-cHarb = spe(*get_spe('cHarb'),cNecro,"cHarb")
-pWeav = spe(*get_spe('pWeav'),cElem,"pWeav",seuil=["down",50,1.2,"p"])
+pCata = spe(*get_spe('pCata'),cElem,"pCata",seuil=["down",50,1.2,"p"])
+pWea = spe(*get_spe('pWea'),cElem,"pWea",seuil=["down",50,1.2,"p"])
 pSpb = spe(*get_spe('pSpb'),cWar,"pSpb")
 pDar = spe(*get_spe('pDar'),cThief,"pDar")
-pTemp = spe(*get_spe('pTemp'),cElem,"pTemp")
-cReap = spe(*get_spe('cReap'),cNecro,"cReap")
+pTmp = spe(*get_spe('pTmp'),cElem,"pTmp")
+pBer = spe(*get_spe('pBer'),cWar,"pBer")
+pHar = spe(*get_spe('pHar'),cNecro,"pHar")
+pVin = spe(*get_spe('pVin'),cRev,"pVin",seuil=["up",80,1.2,"p"])
+pDed = spe(*get_spe('pDed'),cThief,"pDed")
+
+##################### cDPS #####################
+
+cScg = spe(*get_spe('cScg'),cNecro,"cScg")
+cHar = spe(*get_spe('cHar'),cNecro,"cHar")
+cRea = spe(*get_spe('cRea'),cNecro,"cRea")
 cDar = spe(*get_spe('cDar'),cThief,"cDar")
 cRen = spe(*get_spe('cRen'),cRev,"cRen")
-pBers = spe(*get_spe('pBers'),cWar,"pBers")
-cVirt = spe(*get_spe('cVirt'),cMesmer,"cVirt")
+cVir = spe(*get_spe('cVir'),cMesmer,"cVir")
+cMec = spe(*get_spe('cMec'),cEngi,"cMec")
+cWil = spe(*get_spe('cWil'),cGuard,"cWil")
+cDru = spe(*get_spe('cDru'),cRanger,"cDru")
+
+##################### pALAC #####################
+
 paBsw = spe(*get_spe('paBsw'),cWar,"paBsw",seuil=["up",80,1.25,"p"])
-cMech = spe(*get_spe('cMech'),cEngi,"cMech")
-pqHer = spe(*get_spe('pqHer'),cRev,"pqHer")
-cqHarb = spe(*get_spe('cqHarb'),cNecro,"cqHarb")
+paTmp = spe(*get_spe('paTmp'),cElem,"paTmp")
+paMec = spe(*get_spe('paMec'),cEngi,"paMec")
+paChr = spe(*get_spe('paChr'),cMesmer,"paChr")
+
+##################### cALAC #####################
+
+caRen = spe(*get_spe('caRen'),cRev,"caRen")
+caRen_NA = spe(*get_spe('caRen_NA'),cRev,"caRen_NA")
+caScg = spe(*get_spe('caScg'),cNecro,"caScg")
 caMir = spe(*get_spe('caMir'),cMesmer,"caMir")
+caTmp = spe(*get_spe('caTmp'),cElem,"caTmp")
+
+##################### pQUICK #####################
+
+pqHer = spe(*get_spe('pqHer'),cRev,"pqHer")
+pqChr = spe(*get_spe('pqChr'),cMesmer,"pqChr")
+pqScr = spe(*get_spe('pqScr'),cEngi,"pqScr")
+
+##################### cQUICK #####################
+
+cqFb = spe(*get_spe('cqFb'),cGuard,"cqFb")
+cqUnt = spe(*get_spe('cqUnt'),cRanger,"cqUnt")
+cqHar = spe(*get_spe('cqHar'),cNecro,"cqHar")
+cqBer = spe(*get_spe('cqBer'),cWar,"cqBer")
+
+
+
+
+
+
+
+
+
+

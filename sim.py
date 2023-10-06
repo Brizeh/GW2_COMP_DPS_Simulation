@@ -133,7 +133,7 @@ def graph_comp(boss,spe_list,modeDPS="dpsFinal",shuff=False,g_marker="o"): # Gra
     x[0]=1 #sécurité pour la division par 0
     if(modeDPS=="dpsFinal"):  # choix du mode d'affichage degats cummulés ou dps 
         y = y/x
-        plt.ylabel("Dmg/s")
+        plt.ylabel("Dmg/s",color="#ffffff")
 
     n = get_name_comp(spe_list)
     c = get_color_comp(spe_list) # A utiliser si on veut utiliser les couleurs de classes de Arcdps #Rip les daltoniens
@@ -141,6 +141,8 @@ def graph_comp(boss,spe_list,modeDPS="dpsFinal",shuff=False,g_marker="o"): # Gra
         g_line = "dashed"
     if(len(graphs)>18):
         g_line = "dashdot"
+    if(len(graphs)>27):
+        g_line = "dotted"
     if(shuff):
         global dpsxmin
         global dpsymax
@@ -152,7 +154,7 @@ def graph_comp(boss,spe_list,modeDPS="dpsFinal",shuff=False,g_marker="o"): # Gra
                     ax.plot(y,marker=g_marker,markersize=3,label=n,linestyle=g_line)
                     graphs.append(y) 
                 else:
-                    ax.plot(y,marker=g_marker,markersize=3,label=n,color=c,linestyle=g_line)
+                    plt.plot(y,marker=g_marker,markersize=3,label=n,color=c,linestyle=g_line)
                     graphs.append(y)
     else:
         if(DALTONIEN_MODE):
@@ -168,7 +170,7 @@ def get_title_boss(boss): # Get le titre du graph = NOM_DU_BOSS + HP_BOSS
         s = boss[2] + " = " + str(boss[0])+"HP                ("+str(combs)+" combinaisons testées)"
     else:
         s = boss[2] + " = " + str(boss[0])+"HP"
-    plt.title(s)
+    plt.title(s,color="#ffffff")
 
 def shuffle_comp(boss,modeDPS="dpsFinal",dps=[],alac=[],quick=[],g_marker="o"): # Fonction pour tester toutes les combinaisons de compo
     global isShuffle
@@ -203,11 +205,10 @@ def shuffle_comp(boss,modeDPS="dpsFinal",dps=[],alac=[],quick=[],g_marker="o"): 
             e = list(chain.from_iterable(e))
             e = [item for sublist in e for item in (sublist if isinstance(sublist, tuple) else [sublist])]
             graph_comp(boss,e,modeDPS=modeDPS,shuff=True,g_marker=g_marker)
-    isShuffle = False
     return
 
-fig, ax = plt.subplots()
-
+my_dpi=96
+fig, ax = plt.subplots(facecolor = '#303340',figsize=(1728/my_dpi, 972/my_dpi), dpi=my_dpi)
 graphs = []
 
 #####################################################################################################################
@@ -223,21 +224,49 @@ DALTONIEN_MODE = 1  # 0 pour les couleurs de classes / 1 pour couleur mode dalto
 
 Les spé actuellement disponibles pour des tests : 
 
-    DPS : [pCata, cScrg, pBsw, pSlb, pHolo, cHarb, pWeav, pSpb,
-           pDar, pTemp, cReap, cDar, cRen, cMech, cVirt, pBers]
+    pDPS : [pCata, pBsw, pSlb, pHolo, pWea, pSpb, pDar, pTmp, pBer
+            pHar, pVin, pDed]
 
-    ALAC : [caRen, caMir, paBsw]
+    cDPS : [cScg, cHar, cRea, cDar, cRen, cMec, cVir, cWil, cDru]
 
-    QUICK : [cqFb, cqUnt, cqHarb, pqHer]
+    pALAC : [paBsw, paTmp, paMec, paChr]
+
+    cALAC : [caRen, caMir, caScg, caTmp]
+
+    pQUICK : [pqHer, pqChr, pqScr]
+
+    cQUICK : [cqFb, cqUnt, cqHar, cqBer]
 
 '''
 
 dpsStyle = "dpsFinal"   # Ya "cummulative" et "dpsFinal"
-boss = CAIRN # Le boss ici
+'''
+boss = ADINA # Le boss ici
+boss[0]=int(boss[0]/4)
+boss[2]="ADINA 75-50%"
 
-dps = [cVirt,cReap,cHarb,pBsw,pWeav,pSlb]
-alac = [paBsw,caMir]
-quick = [cqHarb,cqUnt, cqFb, pqHer]
+dps = [pWea,pVin,pBsw]
+pBsw.seuil[2]=1
+pVin.seuil[2]=1
+alac = [paBsw,paChr]
+quick = [pqHer,pqChr]
+
+shuffle_comp(boss,dps=dps,alac=alac,quick=quick,g_marker="")
+'''
+
+'''boss = ADINA # Le boss ici
+boss[0]=int(boss[0]/4)
+boss[2]="ADINA P1"
+pBsw.pdps=pBsw.pdps*0.96
+pBsw.seuil[1]=20
+paBsw.seuil[1]=20
+pWea.seuil[2]=1'''
+
+dps = [pDed,cDar]
+alac = [caRen]
+quick = [cqUnt]
+
+boss = CAIRN
 
 shuffle_comp(boss,dps=dps,alac=alac,quick=quick,g_marker="")
 
@@ -248,6 +277,7 @@ shuffle_comp(boss,dps=dps,alac=alac,quick=quick,g_marker="")
 #####################################################################################################################
 
 # Paramètres pour pauffiner le graphique
+
 
 yMax=0 # Ajuster la fenetre
 xMax=0
@@ -275,7 +305,6 @@ ax.set_xticks(np.arange(0, 1000, step=xStep))
 ax.set_yticks(np.arange(0,ysup,yStep))
 ax.set_xlim([xinf,xsup])
 ax.set_ylim([yinf,ysup])
-
 get_title_boss(boss) # Le titre
 
 xtemp = np.linspace(0,600,2000) # Afficher la barre de mort du BOSS
@@ -288,8 +317,13 @@ if(DALTONIEN_MODE): # Salut les daltoniens
     plt.style.use('tableau-colorblind10')
 
 formatter0 = EngFormatter() # Reformatage des textes puis affichage final
+ax.set_facecolor('#303340')
+ax.tick_params(axis = 'x', colors= '#efefef')
+ax.tick_params(axis = 'y', colors= '#efefef')
 ax.yaxis.set_major_formatter(formatter0)
-ax.set_xlabel("Time (s)")
+ax.set_xlabel("Time (s)",color="#ffffff")
 ax.grid()
 ax.legend(bbox_to_anchor=(1,1), loc="upper left")
+plt.savefig("figure.png",bbox_inches='tight',dpi=400)
+fig.tight_layout()
 plt.show()
